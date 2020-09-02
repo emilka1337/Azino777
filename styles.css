@@ -1,0 +1,129 @@
+.slot_image_container {
+    border: 3px solid #000000;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p {
+    transition: 0.5s;
+}
+
+#arrow {
+    width: 90px;
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 150px;
+    left: -20px;
+    z-index: 1;
+}
+
+#roulette {
+    animation: infinite;
+    /* animation-name: roulette; */
+    animation-duration: 99999s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+
+@keyframes roulette {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(999999deg);
+    }
+}
+
+#slots-1 {
+    transition: 10ms;
+    animation: infinite;
+    /* animation-name: slots-1; */
+    animation-duration: 1.3s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+
+@keyframes slots-1 {
+    0% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+    25% {
+        padding-top: 0px;
+        padding-bottom: 25px;
+    }
+    50% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+    100% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+}
+
+#slots-2 {
+    transition: 10ms;
+    animation: infinite;
+    /* animation-name: slots-2; */
+    animation-duration: 1.3s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+
+@keyframes slots-2 {
+    0% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+    25% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+    50% {
+        padding-top: 0px;
+        padding-bottom: 25px;
+    }
+    75% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+    100% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+}
+
+#slots-3 {
+    transition: 10ms;
+    animation: infinite;
+    /* animation-name: slots-3; */
+    animation-duration: 1.3s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+}
+
+@keyframes slots-3 {
+    0% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+    50% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+    75% {
+        padding-top: 0px;
+        padding-bottom: 25px;
+    }
+    100% {
+        padding-top: 25px;
+        padding-bottom: 0px;
+    }
+}
