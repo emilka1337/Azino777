@@ -90,7 +90,7 @@ class Casino {
             result.push(arr[Methods.random(0, arr.length)])       // Выдаёт 3 случайных слота, сохраняя в массив
         }
 
-        Interface.makeImages(result);               // Выводит на экран картинки выпавших слотов
+        Interface.makeSlotImages(result);               // Выводит на экран картинки выпавших слотов
 
         setTimeout(() => {                      // Алгоритм работы слотов
             if (result[0] == result[2] || result[0] == result[1] || result[1] == result[2]) {
@@ -371,14 +371,14 @@ class Casino {
         this.#saveProgress();
     }
 
-    playPoker(bet = '100', ...playersName) {
-        let suits = ['Пики', 'Трефы', 'Червы', 'Бубны'];
+    playPoker(bet = '100', ...playersName) {                                  // ЗАПУСК ИГРЫ В ПОКЕР
+        let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'];
         let cardsValue = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         let deck = [];
         let players = [];
 
         class PokerCombinations {
-            static HighCard(player) {
+            static HighCard(player) {           // Поиск высшей карты
                 console.log(player);
                 let high = 0;
 
@@ -391,7 +391,7 @@ class Casino {
                 return cardsValue[high];
             }
 
-            static Pairs(player) {
+            static Pairs(player) {              // Поиск пары (не работает)
                 player.pairs = 0;
 
                 for (let i = 0; i < 5; i++) {
@@ -402,9 +402,7 @@ class Casino {
                     }
                 }
 
-                player.pairs /= 2;
-
-                return player.pairs;
+                return player.pairs / 2;
             }
         }
 
@@ -429,12 +427,64 @@ class Casino {
             players.push(newPlayer);
         }
 
-        deck = Methods.mixObjectArray(deck);
+        deck = Methods.mixObjectArray(deck);    // Перемешивание колоды
 
         for (let player of players) {
             console.log(PokerCombinations.HighCard(player));
             console.log(PokerCombinations.Pairs(player))
         }
+    }
+
+    playDurak(bet = '100', ...players) {
+        let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'];
+        let cardsValue = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        let deck = [];
+
+        for (let suit of suits) {               // Генерация колоды из 36 карт
+            for (let value of cardsValue) {
+                let card = {};
+                card.suit = suit;
+                card.value = value;
+                card.power = cardsValue.indexOf(value) + 1;
+                deck.push(card);
+            }
+        }
+
+        for (let player of players) {       // Раздача карт игрокам
+            let newPlayer = {};
+
+            for (let i = 0; i < 6; i++) {
+                newPlayer.name = player;
+                Object.defineProperty(newPlayer, 'name', {enumerable: false})
+                newPlayer[`card_${i}`] = deck.splice(Methods.random(0, deck.length), 1)[0];
+            }
+
+            players[players.indexOf(player)] = newPlayer;
+        }
+
+        deck = Methods.mixObjectArray(deck);
+
+        let trump = deck[deck.length - 1];
+
+        for (let card of deck) {            // Назначение козырных карт
+            if (card.suit == trump.suit) {
+                card.trump = true;
+            }
+        }
+
+        for (let player of players) {       // // Назначение козырных карт игрокам
+            for (let card in player) {
+                if (player[card].suit == trump.suit) {
+                    player[card].trump = true
+                }
+            }
+        }
+
+        // console.log(`Козырь: ${deck[deck.length - 1].suit} ${deck[deck.length - 1].value}`);
+
+        console.log(trump);
+        console.log(deck);
+        return players;
     }
 }
 

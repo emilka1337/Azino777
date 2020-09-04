@@ -81,7 +81,7 @@ class Interface {
         }
     }
 
-    static makeImages = (result) => {     // Анимация слот-картинок
+    static makeSlotImages = (result) => {     // Анимация слот-картинок
         for (let i = 1; i <= 3; i++) {
             document.getElementById(`slots-${i}`).setAttribute('src', '')
         }
