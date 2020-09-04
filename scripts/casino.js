@@ -420,7 +420,7 @@ class Casino {
 
             for (let i = 0; i < 5; i++) {
                 newPlayer.name = player;
-                Object.defineProperty(newPlayer, 'name', {enumerable: false})
+                Object.defineProperty(newPlayer, 'name', { enumerable: false })
                 newPlayer[`card_${i}`] = deck.splice(Methods.random(0, deck.length), 1)[0];
             }
 
@@ -440,6 +440,18 @@ class Casino {
         let cardsValue = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         let deck = [];
 
+        if (players.length > 6) {               // Контроль количества игроков
+            if (players.length <= 8) {
+                if (confirm('В классического дурака могут играть не больше 6-ти игроков! Желаете увеличить колоду с 36 карт до 52?')) {
+                    for (let value = 1; value < 6; value++) {
+                        cardsValue.unshift(`${i}`);
+                    }
+                } else return;
+            } else {
+                alert('Слишком много игроков! Максимум возможно 8 игроков!');
+            }
+        }
+
         for (let suit of suits) {               // Генерация колоды из 36 карт
             for (let value of cardsValue) {
                 let card = {};
@@ -450,12 +462,12 @@ class Casino {
             }
         }
 
-        for (let player of players) {       // Раздача карт игрокам
+        for (let player of players) {           // Раздача карт игрокам
             let newPlayer = {};
 
             for (let i = 0; i < 6; i++) {
                 newPlayer.name = player;
-                Object.defineProperty(newPlayer, 'name', {enumerable: false})
+                Object.defineProperty(newPlayer, 'name', { enumerable: false })
                 newPlayer[`card_${i}`] = deck.splice(Methods.random(0, deck.length), 1)[0];
             }
 
@@ -466,13 +478,13 @@ class Casino {
 
         let trump = deck[deck.length - 1];
 
-        for (let card of deck) {            // Назначение козырных карт
+        for (let card of deck) {                // Назначение козырных карт
             if (card.suit == trump.suit) {
                 card.trump = true;
             }
         }
 
-        for (let player of players) {       // // Назначение козырных карт игрокам
+        for (let player of players) {           // Назначение козырных карт игрокам
             for (let card in player) {
                 if (player[card].suit == trump.suit) {
                     player[card].trump = true
@@ -480,7 +492,31 @@ class Casino {
             }
         }
 
-        // console.log(`Козырь: ${deck[deck.length - 1].suit} ${deck[deck.length - 1].value}`);
+        for (let player = 0; player < players.length; player++) {   // Основной цикл игры
+            let playerCards = ``;
+
+            for (let card in players[player]) {
+                if (players[player][card].trump) {
+                    playerCards += `${players[player][card].value} ${players[player][card].suit} *КОЗЫРЬ* \n`;
+                } else {
+                    playerCards += `${players[player][card].value} ${players[player][card].suit} \n`;
+                }
+            }
+
+            alert(`${players[player].name}, Ваши карты: \n\n ${playerCards}`);
+
+            if (player + 1 != players.length) {
+                alert(`${players[player].name}, вы ходите на игрока ${players[player + 1].name}`);
+                let attack = +prompt(`Выберите карту, которой пойдете на ${players[player + 1].name}`);
+
+            } else {
+                alert(`${players[player].name}, вы ходите на игрока ${players[0].name}`);
+                let attack = +prompt(`Выберите карту, которой пойдете на ${players[player + 1].name}`);
+
+                player = -1;
+                break
+            }
+        }
 
         console.log(trump);
         console.log(deck);
@@ -488,7 +524,7 @@ class Casino {
     }
 }
 
-(function() {                                   // Проверка цветовой схемы сайта
+(function () {                                   // Проверка цветовой схемы сайта
     if (localStorage.getItem('colorMode') == 'light' || localStorage.getItem('colorMode') == undefined) {
         Interface.lightMode();
     } else if (localStorage.getItem('colorMode') == 'dark') {
@@ -499,6 +535,8 @@ class Casino {
 }());
 
 let casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
+
+casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');
 
 // static twoPair(player) {
 
