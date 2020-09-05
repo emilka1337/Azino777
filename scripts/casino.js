@@ -507,11 +507,11 @@ class Casino {
 
             if (player + 1 != players.length) {
                 alert(`${players[player].name}, вы ходите на игрока ${players[player + 1].name}`);
-                let attack = +prompt(`Выберите карту, которой пойдете на ${players[player + 1].name}`);
+                let attack = +prompt(`Выберите карту, которой пойдете на ${players[player + 1].name} \n\n ${playerCards}`);
 
             } else {
                 alert(`${players[player].name}, вы ходите на игрока ${players[0].name}`);
-                let attack = +prompt(`Выберите карту, которой пойдете на ${players[player + 1].name}`);
+                let attack = +prompt(`Выберите карту, которой пойдете на ${players[0].name} \n\n ${playerCards}`);
 
                 player = -1;
                 break
