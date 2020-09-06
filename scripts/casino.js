@@ -6,7 +6,13 @@ class Casino {
 
     constructor(name) {
         this.name = name;
-        localStorage.setItem('lastLogin', name);
+        if (name) {
+            localStorage.setItem('lastLogin', name);
+        }
+        if (!name) {
+            alert(`Please, enter a valid name!`);
+            return;
+        }
         this.#balance = localStorage.getItem(name);
         if (this.#balance != undefined) {
             if (isNaN(this.#decryptBalance(this.#shift))) {   // Проверка на вмешательство в LocalStorage shift: 9, 12, 48 lines
@@ -19,6 +25,7 @@ class Casino {
         document.getElementById('balance').innerHTML = `Balance: ${this.#balance}$`
     }
 
+    //#region casino settings
     get balance() {                          // Позволяет узнать баланс
         return this.#balance
     }
@@ -57,7 +64,9 @@ class Casino {
             this.#changeBalance(1000);
         }
     }
+    //#endregion casino settings
 
+    //#region casino games
     playSlotMachine(bet = '100') {                                            // ЗАПУСК СЛОТ-МАШИНЫ
         if (!bet) {
             if (!confirm(`Your bet is 100$. Is it okay?`)) {
@@ -434,8 +443,27 @@ class Casino {
             console.log(PokerCombinations.Pairs(player))
         }
     }
+    //#endregion casino games
 
     playDurak(bet = '100', ...players) {
+        class Durak {
+            static takeCard(player, attack) {
+                let name = player.name;
+                player = JSON.stringify(player);
+                let counter = 0;
+                
+                for (let card in player) {
+                    player = player.replace(/card\d/, `card_${counter}`)
+                }
+
+                player = JSON.parse(player);
+                player[`card_${counter++}`] = attack;
+                player.name = name;
+                Object.defineProperty(player, 'name', {enumerable: false});
+                alert(`${player.name}, вы забрали себе карту ${Object.values(attack).join(', ')}`);
+            }
+        }
+        
         let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'];
         let cardsValue = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         let deck = [];
@@ -458,6 +486,7 @@ class Casino {
                 card.suit = suit;
                 card.value = value;
                 card.power = cardsValue.indexOf(value) + 1;
+                Object.defineProperty(card, 'power', { enumerable: false });
                 deck.push(card);
             }
         }
@@ -474,48 +503,125 @@ class Casino {
             players[players.indexOf(player)] = newPlayer;
         }
 
-        deck = Methods.mixObjectArray(deck);
+        deck = Methods.mixObjectArray(deck);    // Перемешивание колоды
 
-        let trump = deck[deck.length - 1];
+        let trump = deck[deck.length - 1];      // Назначение козыря
 
         for (let card of deck) {                // Назначение козырных карт
             if (card.suit == trump.suit) {
                 card.trump = true;
+                Object.defineProperty(card, 'trump', { enumerable: false });
             }
         }
 
         for (let player of players) {           // Назначение козырных карт игрокам
             for (let card in player) {
                 if (player[card].suit == trump.suit) {
-                    player[card].trump = true
+                    player[card].trump = true;
+                    Object.defineProperty(player[card], 'trump', { enumerable: false });
                 }
             }
         }
 
-        for (let player = 0; player < players.length; player++) {   // Основной цикл игры
-            let playerCards = ``;
+        let attack;
 
-            for (let card in players[player]) {
+        game: for (let player = 0; player < players.length; player++) {   // Основной цикл игры
+            let playerCards = ``;
+            let playerCardsArray = [];
+            let listCounter = 1;
+
+            for (let card in players[player]) {                     // Объявление карт игрока
                 if (players[player][card].trump) {
-                    playerCards += `${players[player][card].value} ${players[player][card].suit} *КОЗЫРЬ* \n`;
+                    playerCards += `${listCounter}) ${players[player][card].value} ${players[player][card].suit} *КОЗЫРЬ* \n`;
+                    playerCardsArray.push(players[player][card]);
+                    listCounter++;
                 } else {
-                    playerCards += `${players[player][card].value} ${players[player][card].suit} \n`;
+                    playerCards += `${listCounter}) ${players[player][card].value} ${players[player][card].suit} \n`;
+                    playerCardsArray.push(players[player][card]);
+                    listCounter++;
                 }
             }
 
             alert(`${players[player].name}, Ваши карты: \n\n ${playerCards}`);
 
+            if (attack) {                                           // Отбитие предыдущей карты
+                if (!attack.trump) {                                // Если нужно отбить козырную карту
+                    alert(`${players[player].name}, вам нужно отбить карту ${Object.values(attack).join(', ')}`);
+
+                    let beatOff = +prompt(`${players[player].name}, выберите карту, которой отобьёте ${Object.values(attack).join(', ')} \n\n ${playerCards}`);
+                    if (!beatOff) {
+                        Durak.takeCard(players[player], attack);
+                        attack = undefined;
+                        continue game;
+                    } else {
+                        beatOff = playerCardsArray[beatOff - 1];            // Назначение карты, которой игрок отбивает
+                        alert(`${players[player].name}, вы выбрали карту ${Object.values(beatOff).join(', ')}`);
+                    }
+
+                    if (beatOff.power > attack.power || beatOff.trump) {      // Проверка, можно ли отбить этой картой
+                        alert(`Карта отбита!`);
+                    } else {
+                        if (beatOff.trump) {
+                            alert(`Нельзя отбить карту ${Object.values(attack).join(', ')} картой ${Object.values(beatOff).join(', ')} *КОЗЫРЬ*`);
+                        } else {
+                            alert(`Нельзя отбить карту ${Object.values(attack).join(', ')} картой ${Object.values(beatOff).join(', ')}`);
+                        }
+                        Durak.takeCard(players[player], attack);
+                        attack = undefined;
+                        continue game;
+                    }
+                } else if (attack.trump) {                            // Если нужно отбить обычную карту
+                    alert(`${players[player].name}, вам нужно отбить карту ${Object.values(attack).join(', ')}, *КОЗЫРЬ*`);
+
+                    let beatOff = +prompt(`${players[player].name}, выберите карту, которой отобьёте ${Object.values(attack).join(', ')} *КОЗЫРЬ* \n\n ${playerCards}`);
+                    if (!beatOff) {
+                        Durak.takeCard(players[player], attack);
+                        attack = undefined;
+                        continue game;
+                    } else {
+                        beatOff = playerCardsArray[beatOff - 1];            // Назначение карты, которой игрок отбивает
+                        alert(`${players[player].name}, вы выбрали карту ${Object.values(beatOff).join(', ')}`);
+                    }
+
+                    if (beatOff.trump && beatOff.power > attack.power) {      // Проверка, можно ли отбить этой картой
+                        alert(`Карта отбита!`);
+                    } else {
+                        if (beatOff.trump) {
+                            alert(`Нельзя отбить карту ${Object.values(attack).join(', ')} картой ${Object.values(beatOff).join(', ')} *КОЗЫРЬ*`);
+                        } else {
+                            alert(`Нельзя отбить карту ${Object.values(attack).join(', ')} *КОЗЫРЬ* картой ${Object.values(beatOff).join(', ')}`);
+                        }
+                        Durak.takeCard(players[player], attack);
+                        attack = undefined;
+                        continue game;
+                    }
+                }
+            }
+
+            //#region ходы игроков?
             if (player + 1 != players.length) {
                 alert(`${players[player].name}, вы ходите на игрока ${players[player + 1].name}`);
-                let attack = +prompt(`Выберите карту, которой пойдете на ${players[player + 1].name} \n\n ${playerCards}`);
-
+                attack = +prompt(`${players[player].name}, выберите карту, которой пойдете на ${players[player + 1].name} \n\n ${playerCards}`);
+                if (playerCardsArray[attack - 1].trump) {
+                    alert(`Вы выбрали карту ${Object.values(playerCardsArray[attack - 1]).join(', ')} *КОЗЫРЬ*`);
+                } else {
+                    alert(`Вы выбрали карту ${Object.values(playerCardsArray[attack - 1]).join(', ')}`);
+                }
+                attack = playerCardsArray[attack - 1];
             } else {
                 alert(`${players[player].name}, вы ходите на игрока ${players[0].name}`);
-                let attack = +prompt(`Выберите карту, которой пойдете на ${players[0].name} \n\n ${playerCards}`);
+                attack = +prompt(`${players[player].name}, выберите карту, которой пойдете на ${players[0].name} \n\n ${playerCards}`);
+                if (playerCardsArray[attack - 1].trump) {
+                    alert(`Вы выбрали карту ${Object.values(playerCardsArray[attack - 1]).join(', ')} *КОЗЫРЬ*`);
+                } else {
+                    alert(`Вы выбрали карту ${Object.values(playerCardsArray[attack - 1]).join(', ')}`);
+                }
+                attack = playerCardsArray[attack - 1];
 
                 player = -1;
-                break
+                break;
             }
+            //#endregion ходы игроков?
         }
 
         console.log(trump);
@@ -525,7 +631,7 @@ class Casino {
 }
 
 (function () {                                   // Проверка цветовой схемы сайта
-    if (localStorage.getItem('colorMode') == 'light' || localStorage.getItem('colorMode') == undefined) {
+    if (localStorage.getItem('colorMode') == 'light' || !localStorage.getItem('colorMode')) {
         Interface.lightMode();
     } else if (localStorage.getItem('colorMode') == 'dark') {
         Interface.darkMode();
@@ -534,9 +640,15 @@ class Casino {
     }
 }());
 
-let casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
+let casino;                                     // Объявление глобальной переменной casino
 
-casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');
+setTimeout(() => {                              // Запрос имени игрока
+    // casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
+    casino = new Casino('Эмилька');
+    // casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');
+}, 500);
+
+
 
 // static twoPair(player) {
 
