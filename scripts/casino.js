@@ -643,8 +643,8 @@ class Casino {
 let casino;                                     // Объявление глобальной переменной casino
 
 setTimeout(() => {                              // Запрос имени игрока
-    // casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
-    casino = new Casino('Эмилька');
+    casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
+    // casino = new Casino('Эмилька');
     // casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');
 }, 500);
 

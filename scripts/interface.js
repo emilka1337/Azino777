@@ -80,7 +80,9 @@ class Interface {
             localStorage.setItem('colorMode', 'light');
         }
     }
+}
 
+class Slots extends Interface {
     static makeSlotImages = (result) => {     // Анимация слот-картинок
         for (let i = 1; i <= 3; i++) {
             document.getElementById(`slots-${i}`).setAttribute('src', '')
@@ -95,8 +97,6 @@ class Interface {
 }
 
 class Roulette extends Interface {
-    constructor() { }
-
     static rotateRoulette(indexOfNumberFromArray) {     // Запустить рулетку
         let random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
