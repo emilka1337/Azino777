@@ -99,7 +99,7 @@ class Casino {
             result.push(arr[Methods.random(0, arr.length)])       // Выдаёт 3 случайных слота, сохраняя в массив
         }
 
-        Interface.makeSlotImages(result);               // Выводит на экран картинки выпавших слотов
+        Slots.makeSlotImages(result);               // Выводит на экран картинки выпавших слотов
 
         setTimeout(() => {                      // Алгоритм работы слотов
             if (result[0] == result[2] || result[0] == result[1] || result[1] == result[2]) {

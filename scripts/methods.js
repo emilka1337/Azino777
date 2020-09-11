@@ -12,7 +12,7 @@ class Methods {
         return array;
     }
 
-    static mixObjectArray(array) {               // Перемешивание массива из объектов
+    static mixObjectArray(array) {               // Перемешивание массива из объектов 
         let stringArr = [];
 
         for (let object of array) {

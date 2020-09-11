@@ -102,6 +102,8 @@ class Roulette extends Interface {
 
         let degree = -1 * indexOfNumberFromArray * 360 / 38 + 360 * random(5, 15);
         let roulette = document.getElementById('roulette');
+        roulette.style.transition = '0s';
+        roulette.style.transform = 'rotate: 0deg';
 
         if (roulette.animationName == 'roulette') {
             style.animationName = 'abc';
