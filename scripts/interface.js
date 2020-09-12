@@ -2,9 +2,10 @@
 
 class Interface {
     static darkMode() {
-        let button = document.getElementById('colorScheme')
-        button.innerText = 'Dark';
-        button.className = 'btn btn-dark';
+        let colorSchemeButton = document.getElementById('colorScheme')
+        colorSchemeButton.innerText = 'Dark';
+
+        document.getElementById('settings').className = 'btn btn-outline-warning';
 
         let p = document.getElementsByTagName('p');
         let h1 = document.getElementsByTagName('h1');
@@ -27,6 +28,9 @@ class Interface {
             i.style.color = 'white';
         }
         for (let i of h5) {
+            i.style.color = 'white';
+        }
+        for (let i of p) {
             i.style.color = 'white';
         }
         for (let i of label) {
@@ -39,9 +43,11 @@ class Interface {
     static lightMode() {
         let button = document.getElementById('colorScheme')
         button.innerText = 'Light';
-        button.className = 'btn btn-outline-dark';
+
+        document.getElementById('settings').className = 'btn btn-outline-dark';
 
         let p = document.getElementsByTagName('p');
+        let settingsLabel = document.getElementsByClassName('settings-label');
         let h1 = document.getElementsByTagName('h1');
         let h2 = document.getElementsByTagName('h2');
         let h3 = document.getElementsByTagName('h3');
@@ -64,8 +70,14 @@ class Interface {
         for (let i of h5) {
             i.style.color = 'black';
         }
+        for (let i of p) {
+            i.style.color = 'black';
+        }
         for (let i of label) {
             i.style.color = 'black';
+        }
+        for (let i of settingsLabel) {
+            i.style.color = 'white';
         }
 
         document.getElementById('site').className = 'bg-light'
@@ -102,8 +114,6 @@ class Roulette extends Interface {
 
         let degree = -1 * indexOfNumberFromArray * 360 / 38 + 360 * random(5, 15);
         let roulette = document.getElementById('roulette');
-        roulette.style.transition = '0s';
-        roulette.style.transform = 'rotate: 0deg';
 
         if (roulette.animationName == 'roulette') {
             style.animationName = 'abc';

@@ -26,8 +26,24 @@
                 <div class="col-lg-3 d-flex" style="align-items: center; justify-content: flex-end;">
                     <h5 id="balance" class="mb-0"></h5>
                 </div>
-                <div class="col-lg-1">
-                    <button onclick="Interface.toggleColorMode()" id="colorScheme">Light</button>
+                <div class="col-lg-1 header-right">
+                    <button class="btn btn-light" id="settings">Settings</button>
+
+                    <div id="settings-cont" class="bg-dark">
+                        <div class="row my-2">
+                            <div class="col">
+                                <label class="settings-label ml-2" for="colorScheme">Color mode: </label>
+                                <button class="btn btn-light mr-3 w-25" onclick="Interface.toggleColorMode()" id="colorScheme" style="float: right;">Light</button>
+                            </div>
+                        </div><hr>
+                        <div class="row my-2">
+                            <div class="col">
+                                <label class="settings-label ml-2">Reset Progress: </label>
+                                <button class="btn btn-danger mr-3 w-25" onclick="casino.resetProgress()" style="float: right;">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <!-- Слоты -->
@@ -54,7 +70,6 @@
                 <input type="text" id="bet" value="100">
                 <button class="btn btn-success ml-3 mr-3"
                     onclick="casino.playSlotMachine(document.getElementById('bet').value)">Launch!</button>
-                <button class="btn btn-danger mr-3" onclick="casino.resetProgress()">Reset progress</button>
                 <h3 id="slots_result" class="m-0"></h3>
             </div>
         </div>
@@ -180,6 +195,7 @@
     <script src="./scripts/interface.js"></script>
     <script src="./scripts/methods.js"></script>
     <script src="./scripts/casino.js"></script>
+    <script src="./scripts/settings.js"></script>
 </body>
 
 </html>

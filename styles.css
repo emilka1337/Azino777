@@ -127,3 +127,28 @@ p {
         padding-bottom: 0px;
     }
 }
+
+.header-right{
+    position: relative;
+}
+
+#settings-cont {
+    position: absolute;
+    display: none;
+    top: 50px;
+    right: 0px;
+    z-index: 1;
+    width: 300px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+}
+
+.settings-label {
+    font-size: 20px;
+}
+
+@media screen and (max-width: 576px) {
+    #settings-cont {
+        left: 0px;
+    }
+}
