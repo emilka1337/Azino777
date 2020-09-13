@@ -91,15 +91,15 @@ class Casino {
             return;
         }
 
-        let arr = ['Apple', 'Pear', 'Coin', 'Cherry', 'Lemon', 'Orange'];
+        let slots = ['Apple', 'Pear', 'Coin', 'Cherry', 'Lemon', 'Orange'];
         let result = [];
         document.getElementById('slots_result').innerText = 'Please, wait...'
 
         for (let i = 0; i < 3; i++) {
-            result.push(arr[Methods.random(0, arr.length)])       // Выдаёт 3 случайных слота, сохраняя в массив
+            result.push(slots[Methods.random(0, slots.length)])       // Выдаёт 3 случайных слота, сохраняя в массив
         }
 
-        Slots.makeSlotImages(result);               // Выводит на экран картинки выпавших слотов
+        Slots.makeSlotImages(result, slots);               // Выводит на экран картинки выпавших слотов
 
         setTimeout(() => {                      // Алгоритм работы слотов
             if (result[0] == result[2] || result[0] == result[1] || result[1] == result[2]) {
@@ -127,7 +127,7 @@ class Casino {
             }
 
             this.#saveProgress();
-        }, 3000)
+        }, 6000)
     }
 
     playRoulette(bet = '100') {                                               // ЗАПУСК ИГРЫ В РУЛЕТКУ
@@ -638,13 +638,21 @@ class Casino {
     } else {
         throw new Error('Error setting color scheme');
     }
+
+    if (localStorage.getItem('animations') == 1 || !localStorage.getItem('animations')) {
+        Interface.enableAnimations();
+    } else if (localStorage.getItem('animations') == 0) {
+        Interface.disableAnimations();
+    } else {
+        throw new Error('Error setting animations');
+    }
 }());
 
 let casino;                                     // Объявление глобальной переменной casino
 
 setTimeout(() => {                              // Запрос имени игрока
-    // casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
-    casino = new Casino('Эмилька');
+    casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
+    // casino = new Casino('Эмилька');
     // casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');
 }, 500);
 

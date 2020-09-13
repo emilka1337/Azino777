@@ -92,18 +92,64 @@ class Interface {
             localStorage.setItem('colorMode', 'light');
         }
     }
+
+    static enableAnimations() {
+        document.getElementById('animationsToggler').innerText = 'ON';
+        let animationNames = ['roulette', 'slots-1', 'slots-2', 'slots-3'];
+
+        for (let name of animationNames) {
+            document.getElementById(name).style.animationName = name;
+        }
+    }
+
+    static disableAnimations() {
+        document.getElementById('animationsToggler').innerText = 'OFF';
+        let animationNames = ['roulette', 'slots-1', 'slots-2', 'slots-3'];
+
+        for (let name of animationNames) {
+            document.getElementById(name).style.animationName = 'abc';
+        }
+    }
+
+    static toggleAnimations() {
+        if (localStorage.getItem('animations') == 1) {
+            this.disableAnimations();
+            localStorage.setItem('animations', 0);
+        } else {
+            this.enableAnimations();
+            localStorage.setItem('animations', 1);
+        }
+    }
 }
 
 class Slots extends Interface {
-    static makeSlotImages = (result) => {     // Анимация слот-картинок
-        for (let i = 1; i <= 3; i++) {
-            document.getElementById(`slots-${i}`).setAttribute('src', '')
-        }
+    static makeSlotImages = (result, variants) => {     // Анимация слот-картинок
+        // let variants = ['Apple', 'Pear', 'Coin', 'Cherry', 'Lemon', 'Orange'];
+
+        let img1 = setInterval(() => {
+            document.getElementById(`slots-1`).setAttribute('src', `img/${variants[Methods.random(0, variants.length)]}.png`);
+        }, 50);
+        let img2 = setInterval(() => {
+            document.getElementById(`slots-2`).setAttribute('src', `img/${variants[Methods.random(0, variants.length)]}.png`);
+        }, 50);
+        let img3 = setInterval(() => {
+            document.getElementById(`slots-3`).setAttribute('src', `img/${variants[Methods.random(0, variants.length)]}.png`);
+        }, 50);
+
+        setTimeout(() => {
+            clearInterval(img1);
+        }, 1900)
+        setTimeout(() => {
+            clearInterval(img2);
+        }, 3900)
+        setTimeout(() => {
+            clearInterval(img3);
+        }, 5900)
 
         for (let i = 1; i <= 3; i++) {
             setTimeout(() => {
-                document.getElementById(`slots-${i}`).setAttribute('src', `img/${result[i - 1]}.png`)
-            }, i * 1000)
+                document.getElementById(`slots-${i}`).setAttribute('src', `img/${result[i - 1]}.png`);
+            }, i * 2000);
         }
     }
 }
@@ -158,3 +204,7 @@ class Roulette extends Interface {
         }
     }
 }
+
+$('#settings').click(function () {
+    $('#settings-cont').toggle(200);
+});
