@@ -124,16 +124,26 @@ class Interface {
 
 class Slots extends Interface {
     static makeSlotImages = (result, variants) => {     // Анимация слот-картинок
-        // let variants = ['Apple', 'Pear', 'Coin', 'Cherry', 'Lemon', 'Orange'];
+        let counter = 0;
 
         let img1 = setInterval(() => {
-            document.getElementById(`slots-1`).setAttribute('src', `img/${variants[Methods.random(0, variants.length)]}.png`);
+            if (counter == variants.length) {
+                counter = 0;
+            }
+            document.getElementById(`slots-1`).setAttribute('src', `img/${variants[counter]}.png`);
         }, 50);
         let img2 = setInterval(() => {
-            document.getElementById(`slots-2`).setAttribute('src', `img/${variants[Methods.random(0, variants.length)]}.png`);
+            if (counter == variants.length) {
+                counter = 0;
+            }
+            document.getElementById(`slots-2`).setAttribute('src', `img/${variants[counter]}.png`);
         }, 50);
         let img3 = setInterval(() => {
-            document.getElementById(`slots-3`).setAttribute('src', `img/${variants[Methods.random(0, variants.length)]}.png`);
+            if (counter == variants.length) {
+                counter = 0;
+            }
+            document.getElementById(`slots-3`).setAttribute('src', `img/${variants[counter]}.png`);
+            counter++;
         }, 50);
 
         setTimeout(() => {
