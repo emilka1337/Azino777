@@ -116,7 +116,8 @@ class Casino {
                 }
             } else {
                 console.log(`Try again :( \n Your balance is ${this.balance}$`);
-                document.getElementById('slots_result').innerText = `Try again :( \n Your balance is ${this.balance}$`
+                document.getElementById('slots_result').innerText = `Try again :(`;
+                setTimeout(() => document.getElementById('slots_result').innerText = '',5000)
             }
 
             if (this.balance <= 0) {
