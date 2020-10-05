@@ -95,11 +95,29 @@ class Interface {
 
     static enableAnimations() {
         document.getElementById('animationsToggler').innerText = 'ON';
-        let animationNames = ['roulette', 'slots-1', 'slots-2', 'slots-3'];
+        // let animationNames = ['roulette', 'slots-1', 'slots-2', 'slots-3'];
+        let animationNames = ['slots-1', 'slots-2', 'slots-3'];
 
         for (let name of animationNames) {
             document.getElementById(name).style.animationName = name;
         }
+
+        // for (let i = 0; i < 100000; i++) {
+        //     setTimeout(function() {
+        //         document.getElementById('roulette').style.transform = `rotate(${i}deg)`;
+        //     }, i * 100)
+        // }
+
+        let start = Date.now();
+        let rouletteAmimation = setInterval(function() {
+            let timePassed = Date.now() - start;
+
+            document.getElementById('roulette').style.transform = `rotate(${timePassed / 5}deg)`;
+
+            if (timePassed > 3600000) {
+                clearInterval(rouletteAmimation);
+            }
+        }, 100)
     }
 
     static disableAnimations() {

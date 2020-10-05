@@ -630,6 +630,29 @@ class Casino {
     }
 
     playJoker(bet = '100') {                                                  // ЗАПУСК ИГРЫ В ДЖОКЕР
+        if (!bet) {
+            if (!confirm(`Your bet is 100$. Is it okay?`)) {
+                return;
+            } else bet = '100'
+        }
+
+        if (typeof (bet) != "number") {
+            try {
+                bet = +bet.match(/\d/gi).join('');
+            } catch {
+                alert('Your bet is not contain any number');
+                return;
+            }
+        }
+
+        this.#changeBalance(this.#balance - bet);
+
+        if (this.balance < 0) {
+            alert('Not enough money to make a bet');
+            this.#changeBalance(this.#balance + bet);
+            return;
+        }
+
         let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'];
         let values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         let deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }];
@@ -682,7 +705,7 @@ class Casino {
 
         console.log(playerCards);
 
-        for (let i = 0; ; i++) {
+        for (let i = 0; ; i++) {                                // Логика игры в Джокер
             if (i % 2 == 0) {
                 let playerCardsString = `Ваши карты (${playerCards.length}):\n`;
 
@@ -720,6 +743,7 @@ class Casino {
 
             if (playerCards.length == 0) {
                 alert('Вы победили!');
+                this.#changeBalance(this.#balance + bet * 2);
                 return;
             } else if (opponentCards.length == 0) {
                 alert('Вы проиграли :(');
@@ -734,7 +758,7 @@ class Casino {
     //#endregion casino games
 }
 
-(function () {                                   // Проверка цветовой схемы сайта
+(function () {                                   // Проверка цветовой схемы и анимаций
     if (localStorage.getItem('colorMode') == 'light' || !localStorage.getItem('colorMode')) {
         Interface.lightMode();
     } else if (localStorage.getItem('colorMode') == 'dark') {
