@@ -1,3 +1,23 @@
+.header-right{
+    position: relative;
+}
+
+#settings-cont {
+    position: absolute;
+    display: none;
+    top: 50px;
+    right: 0px;
+    z-index: 1;
+    width: 300px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.settings-label {
+    font-size: 20px;
+}
+
 .slot_image_container {
     border: 3px solid #000000;
     border-radius: 10px;
@@ -124,25 +144,7 @@ p {
     }
 }
 
-.header-right{
-    position: relative;
-}
 
-#settings-cont {
-    position: absolute;
-    display: none;
-    top: 50px;
-    right: 0px;
-    z-index: 1;
-    width: 300px;
-    border: 2px solid #000000;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-.settings-label {
-    font-size: 20px;
-}
 
 @media screen and (max-width: 576px) {
     #settings-cont {

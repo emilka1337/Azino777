@@ -31,7 +31,7 @@ class Casino {
     }
 
     #changeBalance = (value) => {            // Меняет значение приватного поля #balance
-        this.#balance = value;
+        this.#balance = this.#balance + value;
         document.getElementById('balance').innerText = `Balance: ${this.#balance}$`;
     }
 
@@ -83,11 +83,11 @@ class Casino {
             }
         }
 
-        this.#changeBalance(this.#balance - bet);
+        this.#changeBalance(-bet);
 
         if (this.balance < 0) {
             alert('Not enough money to make a bet');
-            this.#changeBalance(this.#balance + bet);
+            this.#changeBalance( bet);
             return;
         }
 
@@ -106,12 +106,12 @@ class Casino {
                 if (result[0] == result[1] && result[1] == result[2]) {
                     console.log(`YOU WIN JACK POT ${bet * 10}$ !!!`);
                     document.getElementById('slots_result').innerText = `YOU WIN JACK POT ${bet * 10}$!!!`
-                    this.#changeBalance(this.#balance + bet * 10);
+                    this.#changeBalance( bet * 10);
                     console.log(`Your balance is ${this.balance}`);
                 } else {
                     console.log(`You win ${bet * 2}!!!`);
                     document.getElementById('slots_result').innerText = `You win ${bet * 2}$ !!!`
-                    this.#changeBalance(this.#balance + bet * 2);
+                    this.#changeBalance( bet * 2);
                     console.log(`Your balance is ${this.balance}$`);
                 }
             } else {
@@ -152,11 +152,11 @@ class Casino {
             return;
         }
 
-        this.#changeBalance(this.balance - bet);
+        this.#changeBalance(-bet);
 
         if (this.balance < 0) {
             alert('Not enough money to make a bet');
-            this.#changeBalance(this.#balance + bet);
+            this.#changeBalance( bet);
             return;
         }
 
@@ -645,11 +645,11 @@ class Casino {
             }
         }
 
-        this.#changeBalance(this.#balance - bet);
+        this.#changeBalance(-bet);
 
         if (this.balance < 0) {
             alert('Not enough money to make a bet');
-            this.#changeBalance(this.#balance + bet);
+            this.#changeBalance( bet);
             return;
         }
 
@@ -743,7 +743,7 @@ class Casino {
 
             if (playerCards.length == 0) {
                 alert('Вы победили!');
-                this.#changeBalance(this.#balance + bet * 2);
+                this.#changeBalance( bet * 2);
                 return;
             } else if (opponentCards.length == 0) {
                 alert('Вы проиграли :(');
