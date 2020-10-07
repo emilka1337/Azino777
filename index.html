@@ -213,15 +213,22 @@
                 <div class="col-md-6 d-flex" style="align-items: center;">
                     <div class="row">
                         <label for="" style="font-size: 28px;">Bet: </label>
-                        <input type="text" class="mx-3">
-                        <button class="btn btn-success">Play!</button>
+                        <input id="jokerBet" type="text" class="mx-3" value="100">
+                        <button class="btn btn-success" onclick="casino.playJoker(document.querySelector('#jokerBet').value)">Play!</button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Table -->
-        <div class="container">
-            
+        <div class="container-fluid my-3">
+            <div class="container-fluid d-flex" style="height: 600px; flex-direction: column; justify-content: space-between;">
+                <div id="opponentCards" class="row d-flex" style="flex-wrap: nowrap; justify-content: space-around;">
+                    <!-- Opponent's card wil appear here -->
+                </div>
+                <div id="playerCards" class="row d-flex" style="flex-wrap: nowrap; justify-content: space-around; align-items: flex-end;">
+                    <!-- Player's cards will appeat here -->
+                </div>
+            </div>
         </div>
     </div>
 

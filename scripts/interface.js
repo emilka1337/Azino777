@@ -109,7 +109,7 @@ class Interface {
         // }
 
         let start = Date.now();
-        let rouletteAmimation = setInterval(function() {
+        let rouletteAmimation = setInterval(function () {
             let timePassed = Date.now() - start;
 
             document.getElementById('roulette').style.transform = `rotate(${timePassed / 5}deg)`;
@@ -140,7 +140,7 @@ class Interface {
     }
 }
 
-class Slots extends Interface {
+class Slots {
     static makeSlotImages = (result, variants) => {     // Анимация слот-картинок
         let counter = 0;
 
@@ -182,7 +182,7 @@ class Slots extends Interface {
     }
 }
 
-class Roulette extends Interface {
+class Roulette {
     static rotateRoulette(indexOfNumberFromArray) {     // Запустить рулетку
         let random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
@@ -231,6 +231,88 @@ class Roulette extends Interface {
             }
         }
     }
+}
+
+class Joker {
+    static clearCardsList(who) {
+        if (who == 'opponent') {
+            document.getElementById('opponentCards').innerHTML = '';
+        } else if (who == 'player') {
+            document.getElementById('playerCards').innerHTML = '';
+        }
+    }
+
+    static fillOpponentCards(opponent) {
+        let opponentCardsCount = document.getElementsByClassName('opponentCard').length;
+        let opponentCards = document.getElementById('opponentCards');
+        let cardIndex = 0;
+
+        while (opponentCardsCount < opponent.length) {
+            let button = document.createElement('button');
+            let img = document.createElement('img');
+            img.src = 'img/Cards/Рубашка.png';
+            img.style.width = '158px';
+            img.style.height = '225px';
+            button.style.border = 'none';
+            button.style.padding = '0';
+            // button.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+            button.style.width = '158px';
+            button.style.height = '225px';
+            button.style.transition = '200ms';
+            button.className = 'opponent-card';
+            button.setAttribute('value', cardIndex);
+            button.appendChild(img);
+
+            button.onmouseover = () => button.style.marginTop = '10px';
+            button.onmouseout = () => button.style.marginTop = '0px';
+
+            opponentCards.appendChild(button);
+            opponentCardsCount++;
+            cardIndex++;
+        }
+    }
+
+    static fillPlayerCards(player) {
+        let playerCardsCount = document.getElementsByClassName('playerCards').length;
+        let playerCards = document.getElementById('playerCards');
+        let cardIndex = 0;
+
+        while (playerCardsCount < player.length) {
+            let button = document.createElement('button');
+            let img = document.createElement('img');
+            let cardName;
+            if (player[cardIndex]['suit'] != 'JOKER') {
+                cardName = `${player[cardIndex]['suit'].substring(0, player[cardIndex]['suit'].length - 2)}-${player[cardIndex]['value']}`;
+            } else {
+                cardName = 'JOKER';
+            }
+
+            console.log(cardName);
+            img.src = `img/Cards/${cardName}.png`;
+            img.style.width = '158px';
+            img.style.height = '225px';
+            button.style.border = 'none';
+            button.style.padding = '0';
+            // button.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+            button.style.width = '158px';
+            button.style.height = '225px';
+            button.style.transition = '200ms';
+            button.className = 'player-card';
+            button.setAttribute('value', cardIndex);
+            button.appendChild(img);
+
+            button.onmouseover = () => button.style.marginBottom = '10px';
+            button.onmouseout = () => button.style.marginBottom = '0px';
+
+            playerCards.appendChild(button);
+            playerCardsCount++;
+            cardIndex++;
+        }
+    }
+
+    // static removeOpponentCard(index) {
+
+    // }
 }
 
 $('#settings').click(function () {

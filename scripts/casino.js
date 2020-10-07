@@ -87,7 +87,7 @@ class Casino {
 
         if (this.balance < 0) {
             alert('Not enough money to make a bet');
-            this.#changeBalance( bet);
+            this.#changeBalance(bet);
             return;
         }
 
@@ -156,7 +156,7 @@ class Casino {
 
         if (this.balance < 0) {
             alert('Not enough money to make a bet');
-            this.#changeBalance( bet);
+            this.#changeBalance(bet);
             return;
         }
 
@@ -649,7 +649,7 @@ class Casino {
 
         if (this.balance < 0) {
             alert('Not enough money to make a bet');
-            this.#changeBalance( bet);
+            this.#changeBalance(bet);
             return;
         }
 
@@ -658,29 +658,6 @@ class Casino {
         let deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }];
         let playerCards = [];
         let opponentCards = [];
-
-        let removePairs = function (player, showThrowedCard) {
-            for (let i = 0; i < player.length; i++) {
-                for (let j = 0; j < player.length; j++) {
-                    if (player[i]['value'] == player[j]['value'] && i != j) {
-                        if (showThrowedCard) {
-                            alert(`Была выброшена карта ${player[i]['suit']} ${player[i]['value']} и ${player[j]['suit']} ${player[j]['value']}`);
-                        }
-                        if (i < j) {
-                            player.splice(j, 1);
-                            player.splice(i, 1);
-                        } else {
-                            player.splice(i, 1);
-                            player.splice(j, 1);
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-            return player;
-        }
 
         for (let suit of suits) {
             for (let value of values) {
@@ -699,14 +676,20 @@ class Casino {
         console.log(playerCards);
 
         for (let i = 0; i < 3; i++) {
-            playerCards = removePairs(playerCards);
-            opponentCards = removePairs(opponentCards);
+            playerCards = Methods.removePairsJoker(playerCards);
+            opponentCards = Methods.removePairsJoker(opponentCards);
         }
+
+        console.log(playerCards);
+        Joker.fillOpponentCards(opponentCards);
+        Joker.fillPlayerCards(playerCards);
 
         console.log(playerCards);
 
         for (let i = 0; ; i++) {                                // Логика игры в Джокер
             if (i % 2 == 0) {
+                Joker.clearCardsList('player');
+                Joker.fillPlayerCards(playerCards);
                 let playerCardsString = `Ваши карты (${playerCards.length}):\n`;
 
                 for (let card of playerCards) {
@@ -729,16 +712,18 @@ class Casino {
                 playerCards.push(JSON.parse(card));
                 alert(`Вы вытянули карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
                 // playerCards = Methods.mixObjectArray(playerCards);
-                playerCards = removePairs(playerCards, true);
+                playerCards = Methods.removePairsJoker(playerCards, true);
                 console.log(playerCards);
             } else {
+                Joker.clearCardsList('opponent');
+                Joker.fillOpponentCards(opponentCards);
                 let selectedCard = Methods.random(0, playerCards.length);
                 let card = JSON.stringify(playerCards[selectedCard]);
                 playerCards.splice(selectedCard, 1);
                 opponentCards.push(JSON.parse(card));
                 alert(`Оппонент забрал у вас карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
                 // opponentCards = Methods.mixObjectArray(opponentCards);
-                opponentCards = removePairs(opponentCards, true);
+                opponentCards = Methods.removePairsJoker(opponentCards, true);
             }
 
             if (playerCards.length == 0) {
@@ -752,8 +737,6 @@ class Casino {
                 continue;
             }
         }
-
-        return playerCards;
     }
     //#endregion casino games
 }
@@ -781,6 +764,7 @@ let casino;                                     // Объявление глоб
 setTimeout(() => {                              // Запрос имени игрока
     // casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
     casino = new Casino('Эмилька');
+    // Joker.fillOpponentCards([1, 2, 3, 4, 5, 6])
     // casino.playJoker();
     // casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');
 }, 500);

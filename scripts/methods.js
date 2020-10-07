@@ -28,4 +28,27 @@ class Methods {
 
         return newArr;
     }
+
+    static removePairsJoker(player, showThrowedCard) {
+        for (let i = 0; i < player.length; i++) {
+            for (let j = 0; j < player.length; j++) {
+                if (player[i]['value'] == player[j]['value'] && i != j) {
+                    if (showThrowedCard) {
+                        alert(`Была выброшена карта ${player[i]['suit']} ${player[i]['value']} и ${player[j]['suit']} ${player[j]['value']}`);
+                    }
+                    if (i < j) {
+                        player.splice(j, 1);
+                        player.splice(i, 1);
+                    } else {
+                        player.splice(i, 1);
+                        player.splice(j, 1);
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return player;
+    }
 }
