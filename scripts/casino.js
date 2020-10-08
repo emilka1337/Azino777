@@ -684,59 +684,95 @@ class Casino {
         Joker.fillOpponentCards(opponentCards);
         Joker.fillPlayerCards(playerCards);
 
-        console.log(playerCards);
-
-        for (let i = 0; ; i++) {                                // Логика игры в Джокер
-            if (i % 2 == 0) {
-                Joker.clearCardsList('player');
-                Joker.fillPlayerCards(playerCards);
-                let playerCardsString = `Ваши карты (${playerCards.length}):\n`;
-
-                for (let card of playerCards) {
-                    playerCardsString += `${card.suit} ${card.value}\n`;
-                }
-
-                alert(playerCardsString);
-
-                let selectedCard = +prompt(`Вытяните карту у оппонента. У него ${opponentCards.length} карт`);
-                if (!selectedCard) return;
-
-                if (selectedCard > opponentCards.length) {
-                    alert('У оппонента нет столько карт');
-                    i--;
-                    continue;
-                }
-
-                let card = JSON.stringify(opponentCards[selectedCard - 1]);
-                opponentCards.splice(selectedCard - 1, 1);
-                playerCards.push(JSON.parse(card));
-                alert(`Вы вытянули карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
-                // playerCards = Methods.mixObjectArray(playerCards);
-                playerCards = Methods.removePairsJoker(playerCards, true);
-                console.log(playerCards);
-            } else {
-                Joker.clearCardsList('opponent');
-                Joker.fillOpponentCards(opponentCards);
-                let selectedCard = Methods.random(0, playerCards.length);
-                let card = JSON.stringify(playerCards[selectedCard]);
-                playerCards.splice(selectedCard, 1);
-                opponentCards.push(JSON.parse(card));
-                alert(`Оппонент забрал у вас карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
-                // opponentCards = Methods.mixObjectArray(opponentCards);
-                opponentCards = Methods.removePairsJoker(opponentCards, true);
-            }
-
+        let opponentTurn = function() {
+            let selectedCard = Methods.random(0, playerCards.length);
+            let card = JSON.stringify(playerCards[selectedCard]);
+            playerCards.splice(selectedCard, 1);
+            opponentCards.push(JSON.parse(card));
+            alert(`Оппонент забрал у вас карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
+            // opponentCards = Methods.mixObjectArray(opponentCards);
+            opponentCards = Methods.removePairsJoker(opponentCards, true);
+            Joker.clearCardsList('player');
+            Joker.clearCardsList('opponent');
+            Joker.fillOpponentCards(opponentCards);
+            Joker.fillPlayerCards(playerCards);
             if (playerCards.length == 0) {
                 alert('Вы победили!');
-                this.#changeBalance( bet * 2);
+                casino.#changeBalance( bet * 2);
                 return;
             } else if (opponentCards.length == 0) {
                 alert('Вы проиграли :(');
                 return;
-            } else {
-                continue;
+            }
+            playerTurn();
+        }
+
+        let playerTurn = function() {
+            let opCardsCollection = document.getElementsByClassName('opponent-card');
+
+            for (let card of opCardsCollection) {
+                card.addEventListener('click', function() {
+                    console.log(opponentCards[card.value]);
+
+                    let opponentCard = JSON.stringify(opponentCards[card.value]);
+                    opponentCards.splice(card.value, 1);
+                    playerCards.push(JSON.parse(opponentCard));
+                    playerCards = Methods.removePairsJoker(playerCards, true);
+                    Joker.clearCardsList('player');
+                    Joker.clearCardsList('opponent');
+                    Joker.fillOpponentCards(opponentCards);
+                    Joker.fillPlayerCards(playerCards);
+                    if (playerCards.length == 0) {
+                        alert('Вы победили!');
+                        casino.#changeBalance( bet * 2);
+                        return;
+                    } else if (opponentCards.length == 0) {
+                        alert('Вы проиграли :(');
+                        return;
+                    }
+                    opponentTurn();
+
+                });
             }
         }
+
+        playerTurn();
+
+        // console.log(playerCards);
+
+        // for (let i = 0; ; i++) {                                // Логика игры в Джокер
+                // Joker.clearCardsList('player');
+                // Joker.fillPlayerCards(playerCards);
+                // Methods.addListenerToOpponentCards();
+
+
+
+                // let playerCardsString = `Ваши карты (${playerCards.length}):\n`;
+
+                // for (let card of playerCards) {
+                //     playerCardsString += `${card.suit} ${card.value}\n`;
+                // }
+
+                // alert(playerCardsString);
+
+                // let selectedCard = +prompt(`Вытяните карту у оппонента. У него ${opponentCards.length} карт`);
+                // if (!selectedCard) return;
+
+                // if (selectedCard > opponentCards.length) {
+                //     alert('У оппонента нет столько карт');
+                //     i--;
+                //     continue;
+                // }
+
+                // let card = JSON.stringify(opponentCards[selectedCard - 1]);
+                // opponentCards.splice(selectedCard - 1, 1);
+                // playerCards.push(JSON.parse(card));
+                // alert(`Вы вытянули карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
+                // // playerCards = Methods.mixObjectArray(playerCards);
+                // playerCards = Methods.removePairsJoker(playerCards, true);
+                // console.log(playerCards);
+
+        // }
     }
     //#endregion casino games
 }

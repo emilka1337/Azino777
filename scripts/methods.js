@@ -51,4 +51,14 @@ class Methods {
 
         return player;
     }
+
+    // static addListenerToOpponentCards(opponent) {
+    //     let cards = document.getElementsByClassName('opponent-card');
+
+    //     for (let card of cards) {
+    //         card.addEventListener('click', function() {
+    //             console.log(opponent[card.value])
+    //         });
+    //     }
+    // }
 }
