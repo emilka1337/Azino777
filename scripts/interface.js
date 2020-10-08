@@ -255,7 +255,6 @@ class Joker {
             img.style.height = '225px';
             button.style.border = 'none';
             button.style.padding = '0';
-            // button.style.backgroundColor = 'rgba(0, 0, 0, 0)';
             button.style.width = '158px';
             button.style.height = '225px';
             button.style.transition = '200ms';
@@ -264,12 +263,8 @@ class Joker {
             button.setAttribute('value', cardIndex);
             button.appendChild(img);
 
-            button.onmouseover = () => button.style.marginTop = '10px';
+            button.onmouseover = () => button.style.marginTop = '20px';
             button.onmouseout = () => button.style.marginTop = '0px';
-
-            // button.addEventListener('click', function() {
-            //     console.log(opponent[button.value])
-            // });
 
             opponentCards.appendChild(button);
             opponentCardsCount++;
@@ -292,13 +287,12 @@ class Joker {
                 cardName = 'JOKER';
             }
 
-            console.log(cardName);
+            // console.log(cardName);
             img.src = `img/Cards/${cardName}.png`;
             img.style.width = '158px';
             img.style.height = '225px';
             button.style.border = 'none';
             button.style.padding = '0';
-            // button.style.backgroundColor = 'rgba(0, 0, 0, 0)';
             button.style.width = '158px';
             button.style.height = '225px';
             button.style.transition = '200ms';
@@ -310,19 +304,11 @@ class Joker {
             button.onmouseover = () => button.style.marginBottom = '10px';
             button.onmouseout = () => button.style.marginBottom = '0px';
 
-            // button.addEventListener('click', function() {
-            //     console.log(player[button.value])
-            // });
-
             playerCards.appendChild(button);
             playerCardsCount++;
             cardIndex++;
         }
     }
-
-    // static removeOpponentCard(index) {
-
-    // }
 }
 
 $('#settings').click(function () {

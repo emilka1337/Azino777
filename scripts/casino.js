@@ -58,6 +58,33 @@ class Casino {
 
     #saveProgress = () => localStorage.setItem(this.name, this.#encryptBalance(this.#shift)); // Сохранения прогресса игрока
 
+    #betValidation = (bet) => {
+        if (!bet) {
+            if (confirm(`Your bet is 100$. Is it okay?`)) {
+                bet = '100';
+            } else {
+                alert('You left the game...')
+                return false;
+            }
+        }
+
+        bet = +bet.match(/\d/gi).join('');
+
+        if (bet) {
+            alert(`Your bet is ${bet}`);
+        } else {
+            alert('Your bet is not contain any number');
+            return false
+        }
+
+        if (bet == 0) {
+            alert('Please, make a bet before start');
+            return false;
+        }
+
+        return bet;
+    }
+
     resetProgress = () => {                                                 // Сброс прогресса игрока, баланс становится 1000$
         if (confirm('Are you sure you want to reset your progress?')) {
             localStorage.removeItem(this.name);
@@ -68,20 +95,9 @@ class Casino {
 
     //#region casino games
     playSlotMachine(bet = '100') {                                            // ЗАПУСК СЛОТ-МАШИНЫ
-        if (!bet) {
-            if (!confirm(`Your bet is 100$. Is it okay?`)) {
-                return;
-            } else bet = '100'
-        }
-
-        if (typeof (bet) != "number") {
-            try {
-                bet = +bet.match(/\d/gi).join('');
-            } catch {
-                alert('Your bet is not contain any number');
-                return;
-            }
-        }
+        bet = this.#betValidation(bet);
+        if (!bet) return;
+        document.getElementById('slotsBet').value = bet;
 
         this.#changeBalance(-bet);
 
@@ -106,12 +122,12 @@ class Casino {
                 if (result[0] == result[1] && result[1] == result[2]) {
                     console.log(`YOU WIN JACK POT ${bet * 10}$ !!!`);
                     document.getElementById('slots_result').innerText = `YOU WIN JACK POT ${bet * 10}$!!!`
-                    this.#changeBalance( bet * 10);
+                    this.#changeBalance(bet * 10);
                     console.log(`Your balance is ${this.balance}`);
                 } else {
                     console.log(`You win ${bet * 2}!!!`);
                     document.getElementById('slots_result').innerText = `You win ${bet * 2}$ !!!`
-                    this.#changeBalance( bet * 2);
+                    this.#changeBalance(bet * 2);
                     console.log(`Your balance is ${this.balance}$`);
                 }
             } else {
@@ -132,25 +148,9 @@ class Casino {
     }
 
     playRoulette(bet = '100') {                                               // ЗАПУСК ИГРЫ В РУЛЕТКУ
-        if (!bet) {
-            if (confirm(`Your bet is 100$. Is it okay?`)) {
-                bet = '100';
-            } else {
-                alert('You left the game...')
-                return;
-            }
-        }
-
-        bet = +bet.match(/\d/gi).join('');
-
-        if (bet) {
-            alert(`Your bet is ${bet}`);
-        } else alert('Your bet is not contain any number');
-
-        if (bet == 0) {
-            alert('Please, make a bet before start');
-            return;
-        }
+        bet = this.#betValidation(bet);
+        if (!bet) return;
+        document.getElementById('rouletteBet').value = bet;
 
         this.#changeBalance(-bet);
 
@@ -630,20 +630,9 @@ class Casino {
     }
 
     playJoker(bet = '100') {                                                  // ЗАПУСК ИГРЫ В ДЖОКЕР
-        if (!bet) {
-            if (!confirm(`Your bet is 100$. Is it okay?`)) {
-                return;
-            } else bet = '100'
-        }
-
-        if (typeof (bet) != "number") {
-            try {
-                bet = +bet.match(/\d/gi).join('');
-            } catch {
-                alert('Your bet is not contain any number');
-                return;
-            }
-        }
+        bet = this.#betValidation(bet);
+        if (!bet) return;
+        document.getElementById('jokerBet').value = bet;
 
         this.#changeBalance(-bet);
 
@@ -684,7 +673,7 @@ class Casino {
         Joker.fillOpponentCards(opponentCards);
         Joker.fillPlayerCards(playerCards);
 
-        let opponentTurn = function() {
+        let opponentTurn = function () {
             let selectedCard = Methods.random(0, playerCards.length);
             let card = JSON.stringify(playerCards[selectedCard]);
             playerCards.splice(selectedCard, 1);
@@ -698,7 +687,7 @@ class Casino {
             Joker.fillPlayerCards(playerCards);
             if (playerCards.length == 0) {
                 alert('Вы победили!');
-                casino.#changeBalance( bet * 2);
+                casino.#changeBalance(bet * 2);
                 return;
             } else if (opponentCards.length == 0) {
                 alert('Вы проиграли :(');
@@ -707,11 +696,11 @@ class Casino {
             playerTurn();
         }
 
-        let playerTurn = function() {
+        let playerTurn = function () {
             let opCardsCollection = document.getElementsByClassName('opponent-card');
 
             for (let card of opCardsCollection) {
-                card.addEventListener('click', function() {
+                card.addEventListener('click', function () {
                     console.log(opponentCards[card.value]);
 
                     let opponentCard = JSON.stringify(opponentCards[card.value]);
@@ -724,7 +713,7 @@ class Casino {
                     Joker.fillPlayerCards(playerCards);
                     if (playerCards.length == 0) {
                         alert('Вы победили!');
-                        casino.#changeBalance( bet * 2);
+                        casino.#changeBalance(bet * 2);
                         return;
                     } else if (opponentCards.length == 0) {
                         alert('Вы проиграли :(');
@@ -737,42 +726,6 @@ class Casino {
         }
 
         playerTurn();
-
-        // console.log(playerCards);
-
-        // for (let i = 0; ; i++) {                                // Логика игры в Джокер
-                // Joker.clearCardsList('player');
-                // Joker.fillPlayerCards(playerCards);
-                // Methods.addListenerToOpponentCards();
-
-
-
-                // let playerCardsString = `Ваши карты (${playerCards.length}):\n`;
-
-                // for (let card of playerCards) {
-                //     playerCardsString += `${card.suit} ${card.value}\n`;
-                // }
-
-                // alert(playerCardsString);
-
-                // let selectedCard = +prompt(`Вытяните карту у оппонента. У него ${opponentCards.length} карт`);
-                // if (!selectedCard) return;
-
-                // if (selectedCard > opponentCards.length) {
-                //     alert('У оппонента нет столько карт');
-                //     i--;
-                //     continue;
-                // }
-
-                // let card = JSON.stringify(opponentCards[selectedCard - 1]);
-                // opponentCards.splice(selectedCard - 1, 1);
-                // playerCards.push(JSON.parse(card));
-                // alert(`Вы вытянули карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
-                // // playerCards = Methods.mixObjectArray(playerCards);
-                // playerCards = Methods.removePairsJoker(playerCards, true);
-                // console.log(playerCards);
-
-        // }
     }
     //#endregion casino games
 }
@@ -798,8 +751,8 @@ class Casino {
 let casino;                                     // Объявление глобальной переменной casino
 
 setTimeout(() => {                              // Запрос имени игрока
-    // casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
-    casino = new Casino('Эмилька');
+    casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
+    // casino = new Casino('Эмилька');
     // Joker.fillOpponentCards([1, 2, 3, 4, 5, 6])
     // casino.playJoker();
     // casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');

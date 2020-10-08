@@ -73,9 +73,9 @@
             <!-- Ставка и кнопки -->
             <div class="row d-flex mt-10" style="align-items: center; margin-top: 10px; height: 80px;">
                 <h4 class="pr-3">Bet: </h4>
-                <input type="text" id="bet" value="100">
+                <input type="text" id="slotsBet" value="100">
                 <button class="btn btn-success ml-3 mr-3"
-                    onclick="casino.playSlotMachine(document.getElementById('bet').value)">Launch!</button>
+                    onclick="casino.playSlotMachine(document.getElementById('slotsBet').value)">Launch!</button>
                 <h3 id="slots_result" class="m-0"></h3>
             </div>
         </div>
@@ -92,9 +92,9 @@
             <div class="col-lg-6 d-flex" style="align-items: center;">
                 <div class="row">
                     <h3 class="mr-2">Bet:</h3>
-                    <input id="roulette-bet" type="text" class="mx-2" value="100">
+                    <input id="rouletteBet" type="text" class="mx-2" value="100">
                     <button class="btn btn-success mx-2"
-                        onclick="casino.playRoulette(document.getElementById('roulette-bet').value)">Launch!</button>
+                        onclick="casino.playRoulette(document.getElementById('rouletteBet').value)">Launch!</button>
                     <button class="btn btn-primary" onclick="Roulette.resetRoulette()">Reset Roulette</button>
                 </div>
             </div>
@@ -210,7 +210,7 @@
                         <h1>Play Joker</h1>
                     </div>
                 </div>
-                <div class="col-md-6 d-flex" style="align-items: center;">
+                <div class="col-md-6 d-flex" style="align-items: center; justify-content: flex-end;">
                     <div class="row">
                         <label for="" style="font-size: 28px;">Bet: </label>
                         <input id="jokerBet" type="text" class="mx-3" value="100">
