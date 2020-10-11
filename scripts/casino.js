@@ -58,33 +58,6 @@ class Casino {
 
     #saveProgress = () => localStorage.setItem(this.name, this.#encryptBalance(this.#shift)); // Сохранения прогресса игрока
 
-    #betValidation = (bet) => {
-        if (!bet) {
-            if (confirm(`Your bet is 100$. Is it okay?`)) {
-                bet = '100';
-            } else {
-                alert('You left the game...')
-                return false;
-            }
-        }
-
-        bet = +bet.match(/\d/gi).join('');
-
-        if (bet) {
-            alert(`Your bet is ${bet}`);
-        } else {
-            alert('Your bet is not contain any number');
-            return false
-        }
-
-        if (bet == 0) {
-            alert('Please, make a bet before start');
-            return false;
-        }
-
-        return bet;
-    }
-
     resetProgress = () => {                                                 // Сброс прогресса игрока, баланс становится 1000$
         if (confirm('Are you sure you want to reset your progress?')) {
             localStorage.removeItem(this.name);
@@ -95,7 +68,7 @@ class Casino {
 
     //#region casino games
     playSlotMachine(bet = '100') {                                            // ЗАПУСК СЛОТ-МАШИНЫ
-        bet = this.#betValidation(bet);
+        bet = Methods.betValidation(bet);
         if (!bet) return;
         document.getElementById('slotsBet').value = bet;
 
@@ -148,9 +121,9 @@ class Casino {
     }
 
     playRoulette(bet = '100') {                                               // ЗАПУСК ИГРЫ В РУЛЕТКУ
-        bet = this.#betValidation(bet);
+        bet = Methods.betValidation(bet);
         if (!bet) return;
-        document.getElementById('rouletteBet').value = bet;
+        document.getElementById('rouletteBet').value = bet;                   // Нужно, чтобы привести ужасную ставку в нормальный вид
 
         this.#changeBalance(-bet);
 
@@ -630,7 +603,7 @@ class Casino {
     }
 
     playJoker(bet = '100') {                                                  // ЗАПУСК ИГРЫ В ДЖОКЕР
-        bet = this.#betValidation(bet);
+        bet = Methods.betValidation(bet);
         if (!bet) return;
         document.getElementById('jokerBet').value = bet;
 

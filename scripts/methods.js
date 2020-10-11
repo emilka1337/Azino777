@@ -3,6 +3,33 @@
 class Methods {
     static random = (min, max) => Math.floor(Math.random() * (max - min)) + min;  // Формула получения случайного числа
 
+    static betValidation = (bet) => {
+        if (!bet) {
+            if (confirm(`Your bet is 100$. Is it okay?`)) {
+                bet = '100';
+            } else {
+                alert('You left the game...')
+                return false;
+            }
+        }
+
+        bet = +bet.match(/\d/gi).join('');
+
+        if (bet) {
+            alert(`Your bet is ${bet}`);
+        } else {
+            alert('Your bet is not contain any number');
+            return false
+        }
+
+        if (bet == 0) {
+            alert('Please, make a bet before start');
+            return false;
+        }
+
+        return bet;
+    }
+
     static mixArray(array) {                     // Перемешивание массива
         for (let i = 0; i < array.length; i++) {
             let randomNumber = this.random(0, array.length);
