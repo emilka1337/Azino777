@@ -615,11 +615,11 @@ class Casino {
             return;
         }
 
-        let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'];
-        let values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        let deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }];
-        let playerCards = [];
-        let opponentCards = [];
+        let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'],
+            values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
+            deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }],
+            playerCards = [],
+            opponentCards = [];
 
         for (let suit of suits) {
             for (let value of values) {
@@ -637,10 +637,11 @@ class Casino {
 
         console.log(playerCards);
 
-        for (let i = 0; i < 3; i++) {
-            playerCards = Methods.removePairsJoker(playerCards);
-            opponentCards = Methods.removePairsJoker(opponentCards);
-        }
+        playerCards = Methods.removePairsJoker(playerCards);
+        opponentCards = Methods.removePairsJoker(opponentCards);
+
+        document.getElementById('playerCards').innerHTML = '';
+        document.getElementById('opponentCards').innerHTML = '';
 
         console.log(playerCards);
         Joker.fillOpponentCards(opponentCards);
@@ -653,7 +654,7 @@ class Casino {
             opponentCards.push(JSON.parse(card));
             alert(`Оппонент забрал у вас карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
             // opponentCards = Methods.mixObjectArray(opponentCards);
-            opponentCards = Methods.removePairsJoker(opponentCards, true);
+            opponentCards = Methods.removePairsJoker(opponentCards);
             Joker.clearCardsList('player');
             Joker.clearCardsList('opponent');
             Joker.fillOpponentCards(opponentCards);
@@ -677,22 +678,27 @@ class Casino {
                     console.log(opponentCards[card.value]);
 
                     let opponentCard = JSON.stringify(opponentCards[card.value]);
+                    Joker.animateSelectedOpponentCard(opponentCards, card.value);
                     opponentCards.splice(card.value, 1);
                     playerCards.push(JSON.parse(opponentCard));
-                    playerCards = Methods.removePairsJoker(playerCards, true);
-                    Joker.clearCardsList('player');
-                    Joker.clearCardsList('opponent');
-                    Joker.fillOpponentCards(opponentCards);
-                    Joker.fillPlayerCards(playerCards);
-                    if (playerCards.length == 0) {
-                        alert('Вы победили!');
-                        casino.#changeBalance(bet * 2);
-                        return;
-                    } else if (opponentCards.length == 0) {
-                        alert('Вы проиграли :(');
-                        return;
-                    }
-                    opponentTurn();
+                    playerCards = Methods.removePairsJoker(playerCards);
+
+                    setTimeout(() => {
+                        Joker.clearCardsList('player');
+                        Joker.clearCardsList('opponent');
+                        Joker.fillOpponentCards(opponentCards);
+                        Joker.fillPlayerCards(playerCards);
+                        if (playerCards.length == 0) {
+                            alert('Вы победили!');
+                            casino.#changeBalance(bet * 2);
+                            return;
+                        } else if (opponentCards.length == 0) {
+                            alert('Вы проиграли :(');
+                            return;
+                        }
+                    }, 1500);
+
+                    setTimeout(opponentTurn, 2500);
                 });
             }
         }
@@ -723,8 +729,8 @@ class Casino {
 let casino;                                     // Объявление глобальной переменной casino
 
 setTimeout(() => {                              // Запрос имени игрока
-    casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
-    // casino = new Casino('Эмилька');
+    // casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
+    casino = new Casino('Эмилька');
     // Joker.fillOpponentCards([1, 2, 3, 4, 5, 6])
     // casino.playJoker();
     // casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');

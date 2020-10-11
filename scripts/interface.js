@@ -259,6 +259,7 @@ class Joker {
             button.style.height = '225px';
             button.style.transition = '200ms';
             button.style.outline = 'none';
+            button.style.color = 'red';
             button.className = 'opponent-card';
             button.setAttribute('value', cardIndex);
             button.appendChild(img);
@@ -308,6 +309,30 @@ class Joker {
             playerCardsCount++;
             cardIndex++;
         }
+    }
+
+    static animateSelectedOpponentCard(opponentCards, index) {
+        let cardsHTML = document.getElementById('opponentCards');
+
+        let card = cardsHTML.children[index];
+        card.style.transform = 'rotate(360deg)';
+        card.innerHTML = '';
+        let src;
+        let img = document.createElement('img');
+        img.style.width = '100%';
+        img.style.height = '100%';
+
+        if (opponentCards[index]['suit'] != 'JOKER') {
+            src = `./img/Cards/${opponentCards[index]['suit'].substring(0, opponentCards[index]['suit'].length - 2)}-${opponentCards[index]['value']}.png`;
+        } else {
+            src = './img/Cards/JOKER.png'
+        }
+
+        img.src = src;
+
+        card.appendChild(img);
+
+
     }
 }
 

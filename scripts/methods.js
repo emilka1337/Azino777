@@ -66,9 +66,11 @@ class Methods {
                     if (i < j) {
                         player.splice(j, 1);
                         player.splice(i, 1);
+                        this.removePairsJoker(player, showThrowedCard);
                     } else {
                         player.splice(i, 1);
                         player.splice(j, 1);
+                        this.removePairsJoker(player, showThrowedCard);
                     }
 
                     break;
@@ -78,14 +80,4 @@ class Methods {
 
         return player;
     }
-
-    // static addListenerToOpponentCards(opponent) {
-    //     let cards = document.getElementsByClassName('opponent-card');
-
-    //     for (let card of cards) {
-    //         card.addEventListener('click', function() {
-    //             console.log(opponent[card.value])
-    //         });
-    //     }
-    // }
 }
