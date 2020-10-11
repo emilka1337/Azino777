@@ -376,7 +376,7 @@ class Casino {
         );
 
         console.log(`Your total reward is ${win}$`);
-        this.#changeBalance(this.balance + win);
+        this.#changeBalance(win);
         console.log(`Balance: ${this.balance}`);
         this.#saveProgress();
     }
@@ -720,7 +720,6 @@ class Casino {
                         return;
                     }
                     opponentTurn();
-
                 });
             }
         }
@@ -739,13 +738,13 @@ class Casino {
         throw new Error('Error setting color scheme');
     }
 
-    if (localStorage.getItem('animations') == 1 || !localStorage.getItem('animations')) {
-        Interface.enableAnimations();
-    } else if (localStorage.getItem('animations') == 0) {
-        Interface.disableAnimations();
-    } else {
-        throw new Error('Error setting animations');
-    }
+    // if (localStorage.getItem('animations') == 1 || !localStorage.getItem('animations')) {
+    //     Interface.enableAnimations();
+    // } else if (localStorage.getItem('animations') == 0) {
+    //     Interface.disableAnimations();
+    // } else {
+    //     throw new Error('Error setting animations');
+    // }
 }());
 
 let casino;                                     // Объявление глобальной переменной casino
