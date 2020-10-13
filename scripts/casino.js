@@ -615,27 +615,16 @@ class Casino {
             return;
         }
 
-        let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'],
-            values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
-            deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }],
+        let deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }].concat(Methods.generateDeck52()),
             playerCards = [],
             opponentCards = [];
 
-        for (let suit of suits) {
-            for (let value of values) {
-                deck.push({
-                    'suit': suit,
-                    'value': value
-                });
-            }
-        }
 
         deck = Methods.mixObjectArray(deck);
 
         playerCards = deck.splice(0, deck.length / 2);
         opponentCards = deck.splice(0, deck.length);
 
-        console.log(playerCards);
 
         playerCards = Methods.removePairsJoker(playerCards);
         opponentCards = Methods.removePairsJoker(opponentCards);
@@ -643,44 +632,51 @@ class Casino {
         document.getElementById('playerCards').innerHTML = '';
         document.getElementById('opponentCards').innerHTML = '';
 
-        console.log(playerCards);
         Joker.fillOpponentCards(opponentCards);
         Joker.fillPlayerCards(playerCards);
 
         let opponentTurn = function () {
+            let gameOver = false;
             let selectedCard = Methods.random(0, playerCards.length);
             let card = JSON.stringify(playerCards[selectedCard]);
             playerCards.splice(selectedCard, 1);
             opponentCards.push(JSON.parse(card));
+
             alert(`Оппонент забрал у вас карту ${JSON.parse(card)['suit']} ${JSON.parse(card)['value']}`);
-            // opponentCards = Methods.mixObjectArray(opponentCards);
+
             opponentCards = Methods.removePairsJoker(opponentCards);
+
             Joker.clearCardsList('player');
             Joker.clearCardsList('opponent');
             Joker.fillOpponentCards(opponentCards);
             Joker.fillPlayerCards(playerCards);
+
             if (playerCards.length == 0) {
                 alert('Вы победили!');
                 casino.#changeBalance(bet * 2);
-                return;
+                gameOver = true;
             } else if (opponentCards.length == 0) {
                 alert('Вы проиграли :(');
-                return;
+                gameOver = true;
             }
-            playerTurn();
+
+            if (!gameOver) playerTurn();
         }
 
         let playerTurn = function () {
             let opCardsCollection = document.getElementsByClassName('opponent-card');
+            let gameOver = false;
 
             for (let card of opCardsCollection) {
                 card.addEventListener('click', function () {
                     console.log(opponentCards[card.value]);
 
-                    let opponentCard = JSON.stringify(opponentCards[card.value]);
                     Joker.animateSelectedOpponentCard(opponentCards, card.value);
+
+                    let opponentCard = JSON.stringify(opponentCards[card.value]);
                     opponentCards.splice(card.value, 1);
                     playerCards.push(JSON.parse(opponentCard));
+
                     playerCards = Methods.removePairsJoker(playerCards);
 
                     setTimeout(() => {
@@ -691,14 +687,13 @@ class Casino {
                         if (playerCards.length == 0) {
                             alert('Вы победили!');
                             casino.#changeBalance(bet * 2);
-                            return;
+                            gameOver = true;
                         } else if (opponentCards.length == 0) {
                             alert('Вы проиграли :(');
-                            return;
+                            gameOver = true;
                         }
+                        if (!gameOver) setTimeout(opponentTurn, 500);
                     }, 1500);
-
-                    setTimeout(opponentTurn, 2500);
                 });
             }
         }

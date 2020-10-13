@@ -334,6 +334,10 @@ class Joker {
 
 
     }
+
+    static highlightPlayerPairedCard(player) {
+        
+    }
 }
 
 $('#settings').click(function () {
