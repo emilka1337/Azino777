@@ -260,6 +260,7 @@ class Joker {
             button.style.transition = '200ms';
             button.style.outline = 'none';
             button.style.color = 'red';
+            button.style.background = 'none';
             button.className = 'opponent-card';
             button.setAttribute('value', cardIndex);
             button.appendChild(img);
@@ -288,7 +289,6 @@ class Joker {
                 cardName = 'JOKER';
             }
 
-            // console.log(cardName);
             img.src = `img/Cards/${cardName}.png`;
             img.style.width = '158px';
             img.style.height = '225px';
@@ -298,6 +298,7 @@ class Joker {
             button.style.height = '225px';
             button.style.transition = '200ms';
             button.style.outline = 'none';
+            button.style.background = 'none';
             button.className = 'player-card';
             button.setAttribute('value', cardIndex);
             button.appendChild(img);

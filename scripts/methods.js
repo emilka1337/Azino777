@@ -16,18 +16,16 @@ class Methods {
         bet = +bet.match(/\d/gi).join('');
 
         if (bet) {
-            alert(`Your bet is ${bet}`);
+            return bet
         } else {
-            alert('Your bet is not contain any number');
-            return false
+            if (bet == 0) {
+                alert('Please, make a bet before start');
+                return false;
+            } else if (bet == '') {
+                alert('Your bet is not contain any number');
+                return false
+            }
         }
-
-        if (bet == 0) {
-            alert('Please, make a bet before start');
-            return false;
-        }
-
-        return bet;
     }
 
     static mixArray(array) {                     // Перемешивание массива
@@ -39,24 +37,7 @@ class Methods {
         return array;
     }
 
-    static mixObjectArray(array) {               // Перемешивание массива из объектов 
-        let stringArr = [];
-
-        for (let object of array) {
-            stringArr.push(JSON.stringify(object));
-        }
-
-        stringArr = this.mixArray(stringArr);
-        let newArr = [];
-
-        for (let string of stringArr) {
-            newArr.push(JSON.parse(string));
-        }
-
-        return newArr;
-    }
-
-    static generateDeck52() {
+    static generateDeck52() {                    // Генерация колоды из 52 карт
         let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'],
             values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
             deck = [];

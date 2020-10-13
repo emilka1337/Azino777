@@ -615,19 +615,25 @@ class Casino {
             return;
         }
 
-        let deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }].concat(Methods.generateDeck52()),
+        let DeckGenerator = new Deck();
+
+        let deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }].concat(DeckGenerator.generateDeck52()),
             playerCards = [],
             opponentCards = [];
 
 
-        deck = Methods.mixObjectArray(deck);
+        deck = Deck.mixDeck(deck);
 
         playerCards = deck.splice(0, deck.length / 2);
         opponentCards = deck.splice(0, deck.length);
 
-
         playerCards = Methods.removePairsJoker(playerCards);
         opponentCards = Methods.removePairsJoker(opponentCards);
+
+        if (playerCards.length > 9) {
+            this.playJoker('' + bet);
+            return;
+        }
 
         document.getElementById('playerCards').innerHTML = '';
         document.getElementById('opponentCards').innerHTML = '';
@@ -726,9 +732,6 @@ let casino;                                     // Объявление глоб
 setTimeout(() => {                              // Запрос имени игрока
     // casino = new Casino(prompt('Please, enter your name', localStorage.getItem('lastLogin', name) || ''));
     casino = new Casino('Эмилька');
-    // Joker.fillOpponentCards([1, 2, 3, 4, 5, 6])
-    // casino.playJoker();
-    // casino.playDurak(100, 'Эмилька', 'Ойдан', 'Ак', 'Лалочька');
 }, 500);
 
 
