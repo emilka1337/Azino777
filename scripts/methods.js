@@ -37,23 +37,6 @@ class Methods {
         return array;
     }
 
-    static generateDeck52() {                    // Генерация колоды из 52 карт
-        let suits = ['Пики \u2664', 'Трефы \u2667', 'Червы \u2665', 'Бубны \u2662'],
-            values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
-            deck = [];
-
-        for (let suit of suits) {
-            for (let value of values) {
-                deck.push({
-                    'suit': suit,
-                    'value': value
-                });
-            }
-        }
-
-        return deck;
-    }
-
     static removePairsJoker(player, showThrowedCard) {
         for (let i = 0; i < player.length; i++) {
             for (let j = 0; j < player.length; j++) {

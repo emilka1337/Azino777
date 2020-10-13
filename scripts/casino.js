@@ -617,10 +617,9 @@ class Casino {
 
         let DeckGenerator = new Deck();
 
-        let deck = [{ 'suit': 'JOKER', 'value': 'JOKER' }].concat(DeckGenerator.generateDeck52()),
-            playerCards = [],
-            opponentCards = [];
-
+        let deck = DeckGenerator.generateDeck52andJoker();
+        let playerCards = [];
+        let opponentCards = [];
 
         deck = Deck.mixDeck(deck);
 
