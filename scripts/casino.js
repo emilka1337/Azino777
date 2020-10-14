@@ -167,9 +167,7 @@ class Casino {
         }
 
         // Выбор игры
-        if (GameMode == 1) {
-            // let userColor = +prompt('1 - black \n2 - red');         // Игра в цвета
-
+        if (GameMode == 1) {                                    // Игра в цвета
             let colors = document.getElementsByName('color');
             let userColor = 1;
 
@@ -212,7 +210,6 @@ class Casino {
         }
 
         else if (GameMode == 2) {                                   // Игра в чётное/нечётное
-
             let choises = document.getElementsByName('evenOdd');
             let userEven = 1;
 
@@ -246,7 +243,6 @@ class Casino {
         }
 
         else if (GameMode == 3) {                                   // Игра в диапазон
-            // let userRange = +prompt('1 - (0 - 12) \n 2 - (13 - 24) \n 3 - (25 - 36)')
             let ranges = document.getElementsByName('range');
             let userRange = 1;
 
@@ -343,10 +339,10 @@ class Casino {
             }
         }
 
-        setTimeout(                                                 // Автосброс рулетки
-            Roulette.resetRoulette,
-            20000
-        );
+        // setTimeout(                                                 // Автосброс рулетки
+        //     Roulette.resetRoulette,
+        //     20000
+        // );
 
         console.log(`Your total reward is ${win}$`);
         this.#changeBalance(win);
@@ -658,6 +654,7 @@ class Casino {
 
             if (playerCards.length == 0) {
                 alert('Вы победили!');
+                Joker.animateSelectedOpponentCard(opponentCards, 0);
                 casino.#changeBalance(bet * 2);
                 gameOver = true;
             } else if (opponentCards.length == 0) {
@@ -691,6 +688,7 @@ class Casino {
                         Joker.fillPlayerCards(playerCards);
                         if (playerCards.length == 0) {
                             alert('Вы победили!');
+                            Joker.animateSelectedOpponentCard(opponentCards, 0);
                             casino.#changeBalance(bet * 2);
                             gameOver = true;
                         } else if (opponentCards.length == 0) {

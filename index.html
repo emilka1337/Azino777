@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="styles.css">
     <script src="jQuery/jquery-compressed.js"></script>
     <script src="bootstrap/bootstrap.bundle.min.js"></script>
+
+    <script defer src="./scripts/methods.js"></script>
+    <script defer src="./scripts/interface.js"></script>
+    <script defer src="./scripts/deck.js"></script>
+    <script defer src="./scripts/settings.js"></script>
+    <script defer src="./scripts/casino.js"></script>
 </head>
 
 <body id="site">
@@ -33,9 +39,11 @@
                         <div class="row my-2">
                             <div class="col">
                                 <label class="settings-label ml-2" for="colorScheme">Color mode: </label>
-                                <button class="btn btn-light mr-3 w-25" onclick="Interface.toggleColorMode()" id="colorScheme" style="float: right;">Light</button>
+                                <button class="btn btn-light mr-3 w-25" onclick="Interface.toggleColorMode()"
+                                    id="colorScheme" style="float: right;">Light</button>
                             </div>
-                        </div><hr>
+                        </div>
+                        <hr>
                         <!-- <div class="row my-2">
                             <div class="col">
                                 <label class="settings-label ml-2">Animations: </label>
@@ -45,7 +53,8 @@
                         <div class="row my-2">
                             <div class="col">
                                 <label class="settings-label ml-2">Reset Progress: </label>
-                                <button class="btn btn-danger mr-3 w-25" onclick="casino.resetProgress()" style="float: right;">Reset</button>
+                                <button class="btn btn-danger mr-3 w-25" onclick="casino.resetProgress()"
+                                    style="float: right;">Reset</button>
                             </div>
                         </div>
                     </div>
@@ -84,112 +93,114 @@
     <hr>
 
     <!-- Рулетка -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <h1>Play Casino-Roulette!</h1>
-            </div>
-            <div class="col-lg-6 d-flex" style="align-items: center;">
-                <div class="row">
-                    <h3 class="mr-2">Bet:</h3>
-                    <input id="rouletteBet" type="text" class="mx-2" value="100">
-                    <button class="btn btn-success mx-2"
-                        onclick="casino.playRoulette(document.getElementById('rouletteBet').value)">Launch!</button>
-                    <button class="btn btn-primary" onclick="Roulette.resetRoulette()">Reset Roulette</button>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row my-5">
+                <div class="col-lg-6">
+                    <h1>Play Casino-Roulette!</h1>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Рулетка со стрелкой -->
-            <div class="col-lg-6" style="position: relative;">
-                <div class="roulette-container" style="height: 566px;">
-                    <img id="arrow" src="img/Arrow.png" alt="">
-                    <img id="roulette" src="img/Roulette.png"
-                        style="width: 400px; transition:ease-in-out; transition: 5s;">
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="row mt-2">
-                    <h4>Select game mode:</h4>
-                </div>
-                <!-- Выборы рулетки -->
-                <div class="row mt-2">
-                    <!-- Выбор вида игры в рулетку -->
-                    <div class="col-md-6">
-                        <div class="row d-flex" style="align-items: center;">
-                            <label class="my-1">Color</label>
-                            <input class="ml-2 rouletteGame" name="gameMode" type="radio" checked="true"
-                                onchange="Roulette.rouletteChoiseMade()">
-                        </div>
-
-                        <div class="row d-flex" style="align-items: center;">
-                            <label class="my-1">Even/Odd</label>
-                            <input class="ml-2 rouletteGame" name="gameMode" type="radio"
-                                onchange="Roulette.rouletteChoiseMade()">
-                        </div>
-
-                        <div class="row d-flex" style="align-items: center;">
-                            <label class="my-1">Range</label>
-                            <input class="ml-2 rouletteGame" name="gameMode" type="radio"
-                                onchange="Roulette.rouletteChoiseMade()">
-                        </div>
-
-                        <div class="row d-flex" style="align-items: center;">
-                            <label class="my-1">Number</label>
-                            <input class="ml-2 rouletteGame" name="gameMode" type="radio"
-                                onchange="Roulette.rouletteChoiseMade()">
-                        </div>
+                <div class="col-lg-6 d-flex" style="align-items: center;">
+                    <div class="row">
+                        <h3 class="mr-2">Bet:</h3>
+                        <input id="rouletteBet" type="text" class="mx-2" value="100">
+                        <button class="btn btn-success mx-2"
+                            onclick="casino.playRoulette(document.getElementById('rouletteBet').value)">Launch!</button>
+                        <button class="btn btn-primary" onclick="Roulette.resetRoulette()">Reset Roulette</button>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Выборы внутри игры -->
-                    <div id="roulette_choices" class="col-md-6 p-0">
-                        <!-- Цвета -->
-                        <div class="col rouletteInGameChoice" id="game-1">
+            <div class="row" style="height: 450px;">
+                <!-- Рулетка со стрелкой -->
+                <div class="col-lg-6" style="position: relative;">
+                    <div class="roulette-container" style="">
+                        <img id="arrow" src="img/Arrow.png" alt="">
+                        <img id="roulette" src="img/Roulette.png"
+                            style="width: 400px; transition:ease-in-out; transition: 5s; position: absolute;">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row mt-2">
+                        <h4>Select game mode:</h4>
+                    </div>
+                    <!-- Выборы рулетки -->
+                    <div class="row mt-2">
+                        <!-- Выбор вида игры в рулетку -->
+                        <div class="col-md-6">
                             <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="black">Black</label>
-                                <input type="radio" name="color" id="black" checked='true'>
+                                <label class="my-1">Color</label>
+                                <input class="ml-2 rouletteGame" name="gameMode" type="radio" checked="true"
+                                    onchange="Roulette.rouletteChoiseMade()">
                             </div>
+
                             <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="red">Red</label>
-                                <input type="radio" name="color" id="red">
+                                <label class="my-1">Even/Odd</label>
+                                <input class="ml-2 rouletteGame" name="gameMode" type="radio"
+                                    onchange="Roulette.rouletteChoiseMade()">
                             </div>
+
                             <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="red">Green</label>
-                                <input type="radio" name="color" id="red">
+                                <label class="my-1">Range</label>
+                                <input class="ml-2 rouletteGame" name="gameMode" type="radio"
+                                    onchange="Roulette.rouletteChoiseMade()">
                             </div>
-                        </div>
-                        <!-- Чётное/нечётное -->
-                        <div class="col d-none rouletteInGameChoice" id="game-2">
+
                             <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="even">Even</label>
-                                <input type="radio" name="evenOdd" id="even" checked='true'>
-                            </div>
-                            <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="odd">Odd</label>
-                                <input type="radio" name="evenOdd" id="odd">
-                            </div>
-                        </div>
-                        <!-- Диапазон -->
-                        <div class="col d-none rouletteInGameChoice" id="game-3">
-                            <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="(0 - 12)">(0 - 12)</label>
-                                <input type="radio" name="range" id="(0 - 12)" checked='true'>
-                            </div>
-                            <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="(13 - 24)">(13 - 24)</label>
-                                <input type="radio" name="range" id="(13 - 24)">
-                            </div>
-                            <div class="row d-flex" style="align-items: center;">
-                                <label class="mb-0 mr-3" for="(25 - 36)">(25 - 37)</label>
-                                <input type="radio" name="range" id="(25 - 36)">
+                                <label class="my-1">Number</label>
+                                <input class="ml-2 rouletteGame" name="gameMode" type="radio"
+                                    onchange="Roulette.rouletteChoiseMade()">
                             </div>
                         </div>
-                        <!-- Выбор числа -->
-                        <div class="col d-none rouletteInGameChoice" id="game-4">
-                            <div class="row d-flex" style="align-items: center;">
-                                <label class="mr-3" for="rouletteNumber">Number</label>
-                                <input type="text" name="number" id="rouletteNumber" value="0">
+
+                        <!-- Выборы внутри игры -->
+                        <div id="roulette_choices" class="col-md-6 p-0">
+                            <!-- Цвета -->
+                            <div class="col rouletteInGameChoice" id="game-1">
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="black">Black</label>
+                                    <input type="radio" name="color" id="black" checked='true'>
+                                </div>
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="red">Red</label>
+                                    <input type="radio" name="color" id="red">
+                                </div>
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="red">Green</label>
+                                    <input type="radio" name="color" id="red">
+                                </div>
+                            </div>
+                            <!-- Чётное/нечётное -->
+                            <div class="col d-none rouletteInGameChoice" id="game-2">
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="even">Even</label>
+                                    <input type="radio" name="evenOdd" id="even" checked='true'>
+                                </div>
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="odd">Odd</label>
+                                    <input type="radio" name="evenOdd" id="odd">
+                                </div>
+                            </div>
+                            <!-- Диапазон -->
+                            <div class="col d-none rouletteInGameChoice" id="game-3">
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="(0 - 12)">(0 - 12)</label>
+                                    <input type="radio" name="range" id="(0 - 12)" checked='true'>
+                                </div>
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="(13 - 24)">(13 - 24)</label>
+                                    <input type="radio" name="range" id="(13 - 24)">
+                                </div>
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mb-0 mr-3" for="(25 - 36)">(25 - 37)</label>
+                                    <input type="radio" name="range" id="(25 - 36)">
+                                </div>
+                            </div>
+                            <!-- Выбор числа -->
+                            <div class="col d-none rouletteInGameChoice" id="game-4">
+                                <div class="row d-flex" style="align-items: center;">
+                                    <label class="mr-3" for="rouletteNumber">Number</label>
+                                    <input type="text" name="number" id="rouletteNumber" value="0">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,7 +212,7 @@
     <hr>
 
     <!-- Joker -->
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding: 0;">
         <!-- Header -->
         <div class="container">
             <div class="row">
@@ -214,29 +225,25 @@
                     <div class="row">
                         <label for="" style="font-size: 28px;">Bet: </label>
                         <input id="jokerBet" type="text" class="mx-3" value="100">
-                        <button class="btn btn-success" onclick="casino.playJoker(document.querySelector('#jokerBet').value)">Play!</button>
+                        <button class="btn btn-success"
+                            onclick="casino.playJoker(document.querySelector('#jokerBet').value)">Play!</button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Table -->
-        <div class="container-fluid my-3">
-            <div class="container-fluid d-flex" style="height: 600px; flex-direction: column; justify-content: space-between;">
-                <div id="opponentCards" class="row d-flex" style="flex-wrap: nowrap; justify-content: space-around;">
-                    <!-- Opponent's card wil appear here -->
-                </div>
-                <div id="playerCards" class="row d-flex" style="flex-wrap: nowrap; justify-content: space-around; align-items: flex-end;">
-                    <!-- Player's cards will appeat here -->
-                </div>
+        <div class="container-fluid my-0 d-flex"
+            style="height: 600px; flex-direction: column; justify-content: space-between; ">
+            <div id="opponentCards" class="row d-flex" style="flex-wrap: nowrap; justify-content: space-around;">
+                <!-- Opponent's card wil appear here -->
+            </div>
+            <div id="playerCards" class="row d-flex"
+                style="flex-wrap: nowrap; justify-content: space-around; align-items: flex-end;">
+                <!-- Player's cards will appeat here -->
             </div>
         </div>
     </div>
 
-    <script src="./scripts/methods.js"></script>
-    <script src="./scripts/interface.js"></script>
-    <script src="./scripts/deck.js"></script>
-    <script src="./scripts/casino.js"></script>
-    <script src="./scripts/settings.js"></script>
 </body>
 
 </html>
